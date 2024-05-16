@@ -9,71 +9,70 @@ import java.util.List;
 
 public class UserDaoJDBCImpl implements UserDao {
 
-    private final Connection connection = Util.getConnection();
+    private static final String CREATE_SPREADSHEET_QUERY = "CREATE TABLE IF NOT EXISTS spreadsheet (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(15), lastname VARCHAR(15), age INT)";
+    private static final String DROP_SPREADSHEET_QUERY = "DROP TABLE IF EXISTS spreadsheet";
+    private static final String INSERT_QUERY = "INSERT INTO spreadsheet (name, lastname, age) VALUES (?, ?, ?)";
+    private static final String DELETE_BY_ID_QUERY = "DELETE FROM spreadsheet WHERE ID = ?";
+    private static final String SELECT_ALL_USERS_QUERY = "SELECT * FROM spreadsheet";
+    private static final String DELETE_ALL_DATA_QUERY = "DELETE FROM spreadsheet";
 
+
+    @Override
     public void createUsersTable() {
 
-        String sql = "CREATE TABLE IF NOT EXISTS spreadsheet (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(15), lastname VARCHAR(15), age INT)";
-
-        try {
-            Statement statement = connection.createStatement();
-            statement.executeUpdate(sql);
+        try (Connection connection = Util.getConnection();
+             Statement statement = connection.createStatement()) {
+            statement.executeUpdate(CREATE_SPREADSHEET_QUERY);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
+    @Override
     public void dropUsersTable() {
 
-        String sql = "DROP TABLE IF EXISTS spreadsheet";
-
-        try {
-            Statement statement = connection.createStatement();
-            statement.executeUpdate(sql);
-
+        try (Connection connection = Util.getConnection();
+             Statement statement = connection.createStatement()) {
+            statement.executeUpdate(DROP_SPREADSHEET_QUERY);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
+    @Override
     public void saveUser(String name, String lastName, byte age) {
 
-        String sql = "INSERT INTO spreadsheet (name, lastname, age) VALUES (?, ?, ?)";
-
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        try (Connection connection = Util.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY)) {
             preparedStatement.setString(1, name);
             preparedStatement.setString(2, lastName);
             preparedStatement.setInt(3, age);
             preparedStatement.executeUpdate();
-
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
+    @Override
     public void removeUserById(long id) {
 
-        String sql = "DELETE FROM spreadsheet WHERE ID = ?";
-
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        try (Connection connection = Util.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_BY_ID_QUERY)) {
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
-
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
+    @Override
     public List<User> getAllUsers() {
 
-        String sql = "SELECT * FROM spreadsheet";
         List<User> users = new ArrayList<>();
 
-        try {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet  = statement.executeQuery(sql);
+        try (Connection connection = Util.getConnection();
+             Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(SELECT_ALL_USERS_QUERY);
 
             while (resultSet.next()) {
                 User user = new User();
@@ -89,13 +88,12 @@ public class UserDaoJDBCImpl implements UserDao {
         return users;
     }
 
+    @Override
     public void cleanUsersTable() {
-        String sql = "DELETE FROM spreadsheet";
 
-        try {
-            Statement statement = connection.createStatement();
-            statement.executeUpdate(sql);
-
+        try (Connection connection = Util.getConnection();
+             Statement statement = connection.createStatement()) {
+            statement.executeUpdate(DELETE_ALL_DATA_QUERY);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
