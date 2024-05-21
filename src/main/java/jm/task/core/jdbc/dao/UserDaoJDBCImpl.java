@@ -16,7 +16,7 @@ public class UserDaoJDBCImpl implements UserDao {
     private static final String SELECT_ALL_USERS_QUERY = "SELECT * FROM spreadsheet";
     private static final String DELETE_ALL_DATA_QUERY = "DELETE FROM spreadsheet";
 
-    Connection connection = Util.getConnection();
+    private final Connection connection = Util.getConnection();
 
     @Override
     public void createUsersTable() {
