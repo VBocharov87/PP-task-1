@@ -16,12 +16,10 @@ public class UserDaoHibernateImpl implements UserDao {
     public UserDaoHibernateImpl() {
     }
 
-
     @Override
     public void createUsersTable() {
         try (Session session = HibernateUtil.getSession()) {
             session.beginTransaction();
-
             session.createSQLQuery(CREATE_SPREADSHEET_QUERY).executeUpdate();
             session.getTransaction().commit();
         }
@@ -31,7 +29,6 @@ public class UserDaoHibernateImpl implements UserDao {
     public void dropUsersTable() {
         try (Session session = HibernateUtil.getSession()) {
             session.beginTransaction();
-
             session.createSQLQuery(DROP_SPREADSHEET_QUERY).executeUpdate();
             session.getTransaction().commit();
         }
@@ -52,7 +49,6 @@ public class UserDaoHibernateImpl implements UserDao {
     public void removeUserById(long id) {
         try (Session session = HibernateUtil.getSession()) {
             session.beginTransaction();
-
             User user = session.get(User.class, id);
             session.delete(user);
             session.getTransaction().commit();

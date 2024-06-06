@@ -7,8 +7,8 @@ import org.hibernate.cfg.Configuration;
 
 public class HibernateUtil implements AutoCloseable {
 
-
     private static final SessionFactory sessionFactory = buildSessionFactory();
+    private static final Session session = getSession();
 
     private static SessionFactory buildSessionFactory() {
         try {
@@ -22,8 +22,6 @@ public class HibernateUtil implements AutoCloseable {
         }
     }
 
-    private static final Session session = getSession();
-
     public static Session getSession() {
         if (session == null || !session.isOpen()) {
             try {
@@ -32,15 +30,8 @@ public class HibernateUtil implements AutoCloseable {
                 e.printStackTrace();
             }
         }
-        return session;
+        return sessionFactory.getCurrentSession();
     }
-
-//    public static void closeSession() {
-//        if (session != null && session.isOpen()) {
-//            session.close();
-//            sessionFactory.close();
-//        }
-//    }
 
     @Override
     public void close() {

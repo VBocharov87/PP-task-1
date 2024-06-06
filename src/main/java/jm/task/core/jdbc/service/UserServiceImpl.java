@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService  {
 
     @Override
     public void saveUser(String name, String lastName, byte age) {
-//        userDao.saveUser("Gipsy", "General", (byte) 56);
+//        userDao.saveUser(name, lastName, age);
         userDaoHibernate.saveUser(name, lastName, age);
     }
 

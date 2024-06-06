@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class Util {
+public class Util implements AutoCloseable {
     // реализуйте настройку соеденения с БД
     private static final String URL = "jdbc:mysql://localhost:3306/users";
     private static final String USERNAME = "root";
@@ -22,7 +22,8 @@ public class Util {
         return connection;
     }
 
-    public static void closeConnection() {
+    @Override
+    public void close() {
         try {
             if (connection != null && !connection.isClosed()) {
                 connection.close();
