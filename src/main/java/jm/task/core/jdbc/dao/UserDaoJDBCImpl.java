@@ -9,7 +9,7 @@ import java.util.List;
 
 public class UserDaoJDBCImpl implements UserDao {
 
-    private static final String CREATE_SPREADSHEET_QUERY = "CREATE TABLE IF NOT EXISTS spreadsheet (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(25), lastname VARCHAR(25), age INT)";
+    private static final String CREATE_SPREADSHEET_QUERY = "CREATE TABLE IF NOT EXISTS spreadsheet (id BIGINT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255), lastname VARCHAR(255), age TINYINT)";
     private static final String DROP_SPREADSHEET_QUERY = "DROP TABLE IF EXISTS spreadsheet";
     private static final String INSERT_QUERY = "INSERT INTO spreadsheet (name, lastname, age) VALUES (?, ?, ?)";
     private static final String DELETE_BY_ID_QUERY = "DELETE FROM spreadsheet WHERE ID = ?";

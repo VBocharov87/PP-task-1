@@ -1,8 +1,11 @@
 package jm.task.core.jdbc.util;
 
+import com.mysql.jdbc.Driver;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Enumeration;
 
 public class Util implements AutoCloseable {
     // реализуйте настройку соеденения с БД

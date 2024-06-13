@@ -3,14 +3,12 @@ package jm.task.core.jdbc.dao;
 import jm.task.core.jdbc.model.User;
 import jm.task.core.jdbc.util.HibernateUtil;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 
 import java.util.List;
 
 public class UserDaoHibernateImpl implements UserDao {
 
-    private static final String CREATE_SPREADSHEET_QUERY = "CREATE TABLE IF NOT EXISTS spreadsheet (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(25), lastname VARCHAR(25), age INT)";
+    private static final String CREATE_SPREADSHEET_QUERY = "CREATE TABLE IF NOT EXISTS spreadsheet (id BIGINT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255), lastname VARCHAR(255), age TINYINT)";
     private static final String DROP_SPREADSHEET_QUERY = "DROP TABLE IF EXISTS spreadsheet";
 
     public UserDaoHibernateImpl() {
@@ -61,7 +59,7 @@ public class UserDaoHibernateImpl implements UserDao {
 
         try (Session session = HibernateUtil.getSession()) {
             session.beginTransaction();
-            users = session.createQuery("from User").getResultList();
+            users = session.createQuery("from User", User.class).getResultList();
             session.getTransaction().commit();
         }
         return users;
