@@ -1,8 +1,6 @@
 package jm.task.core.jdbc.model;
 
-import java.io.Serializable;
-
-public class User implements Serializable {
+public class User {
 
     private Long id;
     private String name;
